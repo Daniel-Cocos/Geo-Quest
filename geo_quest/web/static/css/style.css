@@ -10,6 +10,12 @@ header {
   align-items: center;
 }
 
+body, html {
+  color: #FFFFFF;
+  background-color: #121212;
+}
+
+
 .header-element {
   font-family: Arial, sans-serif;
   font-size: 16px;
@@ -48,4 +54,41 @@ header {
 .header-button:hover {
   background-color: #001255;
   color: #FFF;
+}
+
+.rules-flexbox-container-1 {
+  background-color: #FF0000;
+  display: flex;
+  position: absolute;
+  top: 20vh;
+  left: 10vw;
+  flex-direction: column;
+}
+
+.rules-flexbox-container-2 {
+  background-color: #FF0000;
+  display: flex;
+  position: absolute;
+  top: 20vh;
+  left: 40vw;
+  flex-direction: column;
+}
+
+.rules-flexbox-container-3 {
+  background-color: #FF0000;
+  display: flex;
+  position: absolute;
+  top: 20vh;
+  left: 70vw;
+  flex-direction: column;
+}
+
+.flexbox-item {
+  width: 100px;
+  margin: 10px;
+  background-color: #d1d1d1;
+}
+
+.flexbox-item-1 {
+  min-height: 100px;
 }
