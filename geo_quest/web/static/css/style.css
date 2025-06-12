@@ -2,6 +2,7 @@ header {
   background-color: #047;
   display: flex;
   position: absolute;
+  flex-direction: row;
   top: 0;
   left: 0;
   width: 100vw;
@@ -10,11 +11,17 @@ header {
   align-items: center;
 }
 
-body, html {
-  color: #FFFFFF;
+body,
+html {
+  color: #ffffff;
   background-color: #121212;
 }
 
+.flexbox-container {
+  display: flex;
+  position: absolute;
+  flex-direction: column;
+}
 
 .header-element {
   font-family: Arial, sans-serif;
@@ -24,7 +31,7 @@ body, html {
 .header-button {
   background-color: #0470;
   border: none;
-  color: #AAA;
+  color: #aaa;
   padding: 16px 32px;
   text-align: center;
   font-family: Arial, sans-serif;
@@ -39,7 +46,7 @@ body, html {
 .header-button-selected {
   background-color: #0470;
   border: none;
-  color: #FFF;
+  color: #fff;
   padding: 16px 32px;
   text-align: center;
   font-family: Arial, sans-serif;
@@ -53,34 +60,25 @@ body, html {
 
 .header-button:hover {
   background-color: #001255;
-  color: #FFF;
+  color: #fff;
 }
 
-.rules-flexbox-container-1 {
-  background-color: #FF0000;
-  display: flex;
-  position: absolute;
+.rules-container-1 {
+  background-color: #ff0000;
   top: 20vh;
   left: 10vw;
-  flex-direction: column;
 }
 
-.rules-flexbox-container-2 {
-  background-color: #FF0000;
-  display: flex;
-  position: absolute;
+.rules-container-2 {
+  background-color: #ff0000;
   top: 20vh;
   left: 40vw;
-  flex-direction: column;
 }
 
-.rules-flexbox-container-3 {
-  background-color: #FF0000;
-  display: flex;
-  position: absolute;
+.rules-container-3 {
+  background-color: #ff0000;
   top: 20vh;
   left: 70vw;
-  flex-direction: column;
 }
 
 .flexbox-item {
@@ -91,4 +89,70 @@ body, html {
 
 .flexbox-item-1 {
   min-height: 100px;
+}
+
+.slider {
+  position: relative;
+  width: 300px;
+  height: 20px;
+  top: 0px;
+  left: 0px;
+}
+
+.slider-container-1 {
+  top: 20vh;
+  left: 20vw;
+}
+
+.slider-container-2 {
+  top: 60vh;
+  left: 20vw;
+}
+
+.slider>.track {
+  position: relative;
+  width: 300px;
+  height: 20px;
+  top: 0px;
+  left: 0px;
+  border-radius: 5px;
+  background-color: #0000ff;
+  z-index: 1;
+}
+
+.slider>.range {
+  position: absolute;
+  height: 20px;
+  left: 25%;
+  right: 25%;
+  bottom: 0;
+  top: 0;
+  border-radius: 5px;
+  background-color: #009999;
+  z-index: 2;
+}
+
+.slider>.thumb {
+  position: absolute;
+  z-index: 3;
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  background-color: #00ff00;
+  transform: translate(-50%, -80%);
+}
+
+.slider-label {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+}
+
+.left-range,
+.right-range {
+  display: none;
 }

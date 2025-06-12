@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Geo Quest</title>
-    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
-  </head>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Geo Quest</title>
+  <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
   <header>
     <button onclick="location.href='rules.html'" class="header-button">How it works</button>
     <button onclick="location.href='index.html'" class="header-button-selected">Play</button>
     <button onclick="location.href='filters.html'" class="header-button">Filters</button>
+    <p>Slider 1: {{ slider1_left }} – {{ slider1_right }}</p>
+    <p>Slider 2: {{ slider2_left }} – {{ slider2_right }}</p>
   </header>
-  <body>
-  </body>
-</html>
+  <!-- At the top of index.html for testing only -->
+</body>
 
+</html>
