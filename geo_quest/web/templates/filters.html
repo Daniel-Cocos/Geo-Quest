@@ -17,6 +17,17 @@
       <button type="button" onclick="location.href='filters.html'" class="header-button-selected">Filters</button>
     </header>
 
+    <!--Toggle Button-->
+    <div class="unit-toggle">
+      <label class="switch">
+        <input type="checkbox" id="unitToggle" name="unit" value="kilometers" {% if unit=="kilometers" %}checked{% endif
+          %}>
+        <span class="slider-switch round"></span>
+      </label>
+      <span id="unitLabel" style="margin-left: 2px;">
+      </span>
+    </div>
+
     <!-- Slider #1 -->
     <div class="flexbox-container slider-container slider-container-1">
       <input type="range" name="slider1_left" min="1" max="10" value="{{ slider1.left }}" class="left-range hidden" />

@@ -11,6 +11,7 @@ def main():
 
 
 @app.route("/filters.html", methods=["GET", "POST"])
+@app.route("/filters.html", methods=["GET", "POST"])
 def settings():
     if request.method == "POST":
         session["slider1"] = {
@@ -21,17 +22,21 @@ def settings():
             "left": request.form.get("slider2_left"),
             "right": request.form.get("slider2_right"),
         }
+        unit = request.form.get("unit", "miles")  # Default to miles
+        session["unit"] = unit
         return redirect(url_for("index"))
 
     slider1 = session.get("slider1", {"left": "2", "right": "8"})
     slider2 = session.get("slider2", {"left": "2", "right": "10"})
-    return render_template("filters.html", slider1=slider1, slider2=slider2)
+    unit = session.get("unit", "miles")
+    return render_template("filters.html", slider1=slider1, slider2=slider2, unit=unit)
 
 
 @app.route("/index.html")
 def index():
     slider1 = session.get("slider1", {"left": None, "right": None})
     slider2 = session.get("slider2", {"left": None, "right": None})
+    unit = session.get("unit", "miles")
 
     return render_template(
         "index.html",
@@ -39,6 +44,7 @@ def index():
         slider1_right=slider1["right"],
         slider2_left=slider2["left"],
         slider2_right=slider2["right"],
+        unit=unit
     )
 
 

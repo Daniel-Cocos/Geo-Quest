@@ -87,4 +87,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateUI();
   });
+
+  const unitToggle = document.getElementById("unitToggle");
+  const unitLabel = document.getElementById("unitLabel");
+  const form = document.getElementById("filters-form");
+
+  const updateUnitLabel = () => {
+    unitLabel.textContent = unitToggle.checked ? "Kilometers" : "Miles";
+  };
+
+  updateUnitLabel();
+
+  unitToggle.addEventListener("change", updateUnitLabel);
+
+  form.addEventListener("submit", () => {
+    unitToggle.value = unitToggle.checked ? "kilometers" : "miles";
+  });
 });
