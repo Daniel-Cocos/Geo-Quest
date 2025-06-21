@@ -1,5 +1,6 @@
 from flask import Flask, redirect, render_template, request, session, url_for
 from werkzeug.wrappers import Response
+import os
 
 app = Flask(__name__)
 app.secret_key = "anna bannana"
