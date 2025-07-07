@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".slider-container").forEach((container, index) => {
+  document.querySelectorAll(".slider-container").forEach((container) => {
     const leftInput = container.querySelector(".left-range");
     const rightInput = container.querySelector(".right-range");
     const sliderDiv = container.querySelector(".slider");
@@ -15,13 +15,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const labelR = document.createElement("div");
     labelL.className = "slider-label";
     labelR.className = "slider-label";
-    thumbL.appendChild(labelL);
-    thumbR.appendChild(labelR);
+    if (!thumbL.querySelector(".slider-label")) thumbL.appendChild(labelL);
+    if (!thumbR.querySelector(".slider-label")) thumbR.appendChild(labelR);
 
     const updateUI = () => {
       let l = +leftInput.value;
       let r = +rightInput.value;
-
       if (r - l < minGap) {
         if (document.activeElement === leftInput) {
           l = Math.min(l, max - minGap);
@@ -33,15 +32,12 @@ document.addEventListener("DOMContentLoaded", () => {
         leftInput.value = l;
         rightInput.value = r;
       }
-
       const percentL = ((l - min) / (max - min)) * 100;
       const percentR = ((r - min) / (max - min)) * 100;
-
       thumbL.style.left = percentL + "%";
       thumbR.style.left = percentR + "%";
       rangeDiv.style.left = percentL + "%";
       rangeDiv.style.right = 100 - percentR + "%";
-
       labelL.textContent = l;
       labelR.textContent = r;
     };
@@ -53,54 +49,22 @@ document.addEventListener("DOMContentLoaded", () => {
         x = Math.max(0, Math.min(x, rect.width));
         const pct = x / rect.width;
         const val = Math.round(min + pct * (max - min));
-
-        if (isLeft) {
-          leftInput.value = Math.min(val, rightInput.value - minGap);
-        } else {
-          rightInput.value = Math.max(val, +leftInput.value + minGap);
-        }
-
+        if (isLeft) leftInput.value = Math.min(val, +rightInput.value - minGap);
+        else rightInput.value = Math.max(val, +leftInput.value + minGap);
         updateUI();
       };
-
       const endDrag = () => {
         document.removeEventListener("mousemove", onMove);
         document.removeEventListener("mouseup", endDrag);
       };
-
       document.addEventListener("mousemove", onMove);
       document.addEventListener("mouseup", endDrag);
     };
 
-    thumbL.addEventListener("mousedown", (e) => {
-      e.preventDefault();
-      startDrag(thumbL, true);
-    });
-
-    thumbR.addEventListener("mousedown", (e) => {
-      e.preventDefault();
-      startDrag(thumbR, false);
-    });
-
+    thumbL.addEventListener("mousedown", (e) => { e.preventDefault(); startDrag(thumbL, true); });
+    thumbR.addEventListener("mousedown", (e) => { e.preventDefault(); startDrag(thumbR, false); });
     leftInput.addEventListener("input", updateUI);
     rightInput.addEventListener("input", updateUI);
-
     updateUI();
-  });
-
-  const unitToggle = document.getElementById("unitToggle");
-  const unitLabel = document.getElementById("unitLabel");
-  const form = document.getElementById("filters-form");
-
-  const updateUnitLabel = () => {
-    unitLabel.textContent = unitToggle.checked ? "Kilometers" : "Miles";
-  };
-
-  updateUnitLabel();
-
-  unitToggle.addEventListener("change", updateUnitLabel);
-
-  form.addEventListener("submit", () => {
-    unitToggle.value = unitToggle.checked ? "kilometers" : "miles";
   });
 });
