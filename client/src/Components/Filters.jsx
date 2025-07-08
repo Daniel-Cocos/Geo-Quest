@@ -1,124 +1,159 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Header from './Header';
 import '../style.css';
 
 const DualSlider = ({ left, right, min, max, onChange }) => {
-  const leftPercent = ((left - min) / (max - min)) * 100;
-  const rightPercent = ((right - min) / (max - min)) * 100;
+  const ref = useRef(null);
+  const [dragging, setDragging] = useState(null);
 
-  const handleLeftChange = e => onChange(Math.min(+e.target.value, right - 1), right);
-  const handleRightChange = e => onChange(left, Math.max(+e.target.value, left + 1));
+  const calcValue = x => {
+    const { left: cx, width } = ref.current.getBoundingClientRect();
+    let pct = (x - cx) / width;
+    pct = Math.max(0, Math.min(1, pct));
+    return Math.round(min + pct * (max - min));
+  };
+
+  useEffect(() => {
+    const onMove = e => {
+      if (!dragging) return;
+      const val = calcValue(e.clientX);
+      if (dragging === 'left') {
+        onChange(Math.min(val, right - 1), right);
+      } else {
+        onChange(left, Math.max(val, left + 1));
+      }
+    };
+    const onUp = () => setDragging(null);
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+    return () => {
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+    };
+  }, [dragging, left, right, min, max, onChange]);
+
+  const leftPct  = ((left  - min) / (max - min)) * 100;
+  const rightPct = ((right - min) / (max - min)) * 100;
 
   return (
-    <div className="slider-container" style={{ position: 'relative', width: '300px', height: '30px' }}>
-      <div className="slider" style={{ position: 'absolute', width: '100%', height: '100%' }}>
-        <div className="track" />
-        <div className="range" style={{ left: `${leftPercent}%`, right: `${100 - rightPercent}%` }} />
-        <div className="thumb left" style={{ left: `${leftPercent}%` }}>{left}</div>
-        <div className="thumb right" style={{ left: `${rightPercent}%` }}>{right}</div>
+    <div ref={ref} className="slider-container">
+      <div className="track" />
+      <div className="range" style={{ left: `${leftPct}%`, right: `${100 - rightPct}%` }} />
+      <div
+        className="thumb left"
+        style={{ left: `${leftPct}%` }}
+        onMouseDown={() => setDragging('left')}
+      >
+        {left}
       </div>
-      <input
-        type="range"
-        min={min}
-        max={max}
-        value={left}
-        onChange={handleLeftChange}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          opacity: 0,
-          zIndex: 3,
-          cursor: 'pointer'
-        }}
-      />
-      <input
-        type="range"
-        min={min}
-        max={max}
-        value={right}
-        onChange={handleRightChange}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          opacity: 0,
-          zIndex: 2,
-          cursor: 'pointer'
-        }}
-      />
+      <div
+        className="thumb right"
+        style={{ left: `${rightPct}%` }}
+        onMouseDown={() => setDragging('right')}
+      >
+        {right}
+      </div>
     </div>
   );
 };
 
 const Filters = () => {
-  const navigate = useNavigate();
-  const [unit, setUnit] = useState('miles');
-  const [slider1, setSlider1] = useState({ left: 2, right: 8 });
-  const [slider2, setSlider2] = useState({ left: 2, right: 10 });
+  const nav = useNavigate();
+  const [unit,   setUnit]   = useState('miles');
+  const [s1,     setS1]     = useState({ left: 2, right: 8 });
+  const [s2,     setS2]     = useState({ left: 2, right: 10 });
   const [loading, setLoading] = useState(true);
+  const STORAGE_KEY = 'filters-draft';
 
   useEffect(() => {
-    async function fetchSettings() {
+    const draft = localStorage.getItem(STORAGE_KEY);
+    if (draft) {
+      try {
+        const { unit, slider1, slider2 } = JSON.parse(draft);
+        setUnit(unit);
+        setS1(slider1);
+        setS2(slider2);
+        setLoading(false);
+        return;
+      } catch {
+        localStorage.removeItem(STORAGE_KEY);
+      }
+    }
+
+    (async () => {
       try {
         const res = await fetch('http://localhost:5000/api/filters', { credentials: 'include' });
         const data = await res.json();
-        setSlider1(data.slider1);
-        setSlider2(data.slider2);
         setUnit(data.unit);
-      } catch {} finally { setLoading(false); }
-    }
-    fetchSettings();
+        setS1(data.slider1);
+        setS2(data.slider2);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    })();
   }, []);
 
-  const handleSubmit = async e => {
+  useEffect(() => {
+    if (!loading) {
+      const draft = JSON.stringify({
+        unit,
+        slider1: s1,
+        slider2: s2,
+      });
+      localStorage.setItem(STORAGE_KEY, draft);
+    }
+  }, [unit, s1, s2, loading]);
+
+  const submit = async e => {
     e.preventDefault();
-    const payload = {
-      slider1_left: slider1.left,
-      slider1_right: slider1.right,
-      slider2_left: slider2.left,
-      slider2_right: slider2.right,
-      unit,
-    };
-    await fetch('http://localhost:5000/api/filters', {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-    navigate('/');
+    try {
+      await fetch('http://localhost:5000/api/filters', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          slider1_left:  s1.left,
+          slider1_right: s1.right,
+          slider2_left:  s2.left,
+          slider2_right: s2.right,
+          unit,
+        }),
+      });
+      localStorage.removeItem(STORAGE_KEY);
+      nav('/');
+    } catch (e) {
+      console.error(e);
+    }
   };
 
-  if (loading) return null;
+  if (loading) return <div className="loading">Loading filters…</div>;
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <header>
-          <button type="button" onClick={() => navigate('/rules')} className="header-button">How it works</button>
-          <Link to="/" className="header-button">Play</Link>
-          <button type="button" className="header-button-selected">Filters</button>
-        </header>
-        <div className="unit-toggle">
-          <label className="switch">
-            <input
-              type="checkbox"
-              checked={unit === 'kilometers'}
-              onChange={() => setUnit(u => u === 'miles' ? 'kilometers' : 'miles')}
-            />
-            <span className="slider-switch round" />
-          </label>
-          <span style={{ marginLeft: '2px' }}>{unit === 'kilometers' ? 'Kilometers' : 'Miles'}</span>
-        </div>
-        <DualSlider min={1} max={10} left={slider1.left} right={slider1.right} onChange={(l, r) => setSlider1({ left: l, right: r })} />
-        <DualSlider min={1} max={10} left={slider2.left} right={slider2.right} onChange={(l, r) => setSlider2({ left: l, right: r })} />
-      </form>
-    </div>
+    <form onSubmit={submit}>
+      <Header />
+      <div className="unit-toggle">
+        <label className="switch">
+          <input
+            type="checkbox"
+            checked={unit === 'kilometers'}
+            onChange={() => setUnit(u => u === 'miles' ? 'kilometers' : 'miles')}
+          />
+          <span className="slider-switch round" />
+        </label>
+        <span>{unit === 'kilometers' ? 'Kilometers' : 'Miles'}</span>
+      </div>
+
+      <div className="sliders-wrap">
+        <DualSlider min={1} max={10} left={s1.left} right={s1.right} onChange={(l, r) => setS1({ left: l, right: r })} />
+        <DualSlider min={1} max={10} left={s2.left} right={s2.right} onChange={(l, r) => setS2({ left: l, right: r })} />
+        <button type="submit" className="header-button save-btn">Save</button>
+      </div>
+    </form>
   );
 };
 
 export default Filters;
+
