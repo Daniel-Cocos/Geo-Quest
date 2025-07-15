@@ -30,7 +30,7 @@ export default function StreetViewImage({ location }) {
         <div>
             <img src={src} alt="Street View" />
             <p>
-                📍 Actual location: Lat {coords?.lat}, Lon {coords?.lon}
+                Actual location: Lat {coords.lat}, Lon {coords.lon}
             </p>
         </div>
     ) : (

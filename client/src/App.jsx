@@ -4,7 +4,6 @@ import './App.css';
 import Topbar from './Components/Topbar';
 
 import Index from './Routes/Index';
-import Filters from './Routes/Filters';
 import Play from './Routes/Play';
 
 function App() {
@@ -13,7 +12,6 @@ function App() {
             <Topbar />
             <Routes>
                 <Route path="/" element={<Index />} />
-                <Route path="/filters" element={<Filters />} />
                 <Route path="/play" element={<Play />} />
             </Routes>
         </div>

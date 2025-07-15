@@ -1,5 +1,4 @@
 import { React, useState } from 'react';
-import axios from 'axios';
 import './Play.css';
 import MapImage from '../Components/MapImage';
 import LocationButton from '../Components/LocationButton';
@@ -12,7 +11,7 @@ function Play() {
     };
 
     return (
-        <div>
+        <div className="play-div">
             <LocationButton onLocation={handleLocation} />
             {location && (
                 <>
