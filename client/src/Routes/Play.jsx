@@ -1,18 +1,24 @@
 import { React, useState } from 'react';
 import './Play.css';
 import MapImage from '../Components/MapImage';
-import LocationButton from '../Components/LocationButton';
 
 function Play() {
     const [location, setLocation] = useState(null);
 
-    const handleLocation = async (coords) => {
-        setLocation(coords);
-    };
+    if (!navigator.geolocation) return;
+
+    if (!location) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const { latitude, longitude } = position.coords;
+                setLocation({ latitude, longitude });
+            },
+            (error) => console.error("Location error:", error)
+        );
+    }
 
     return (
         <div className="play-div">
-            <LocationButton onLocation={handleLocation} />
             {location && (
                 <>
                     <p>
