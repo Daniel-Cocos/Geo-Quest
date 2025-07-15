@@ -5,3 +5,18 @@
     align-items: center;
     justify-content: center;
 }
+
+.card {
+    background-color: #1e1e1e;
+    border-radius: 16px;
+    width: 40%;
+    height: 80%;
+    padding: 20px;
+    color: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    overflow: auto;
+}
+
+img {
+    border-radius: 16px;
+}

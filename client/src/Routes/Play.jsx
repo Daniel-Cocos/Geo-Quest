@@ -1,32 +1,48 @@
-import { React, useState } from 'react';
+import { React, useEffect, useState } from 'react';
 import './Play.css';
 import MapImage from '../Components/MapImage';
 
 function Play() {
-    const [location, setLocation] = useState(null);
+    const [initialLocation, setInitialLocation] = useState(null); // for the map
+    const [currentLocation, setCurrentLocation] = useState(null); // live updates
 
-    if (!navigator.geolocation) return;
+    useEffect(() => {
+        if (!navigator.geolocation) return;
 
-    if (!location) {
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 const { latitude, longitude } = position.coords;
-                setLocation({ latitude, longitude });
+                setInitialLocation({ latitude, longitude });
+                setCurrentLocation({ latitude, longitude });
             },
             (error) => console.error("Location error:", error)
         );
-    }
+
+        const interval = setInterval(() => {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+                    setCurrentLocation({ latitude, longitude });
+                },
+                (error) => console.error("Location error:", error)
+            );
+        }, 500);
+
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <div className="play-div">
-            {location && (
-                <>
-                    <p>
-                        Lat: {location.latitude}, Lon: {location.longitude}
-                    </p>
-                    <MapImage location={location} />
-                </>
-            )}
+            <div className="card">
+                {currentLocation && (
+                    <>
+                        <p>
+                            Lat: {currentLocation.latitude}, Lon: {currentLocation.longitude}
+                        </p>
+                        {initialLocation && <MapImage location={initialLocation} />}
+                    </>
+                )}
+            </div>
         </div>
     );
 }
