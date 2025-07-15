@@ -1,0 +1,27 @@
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: #3273dc;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10%;
+    z-index: 1000;
+}
+
+a {
+    margin-right: 40px;
+    color: #ddd;
+    text-decoration: none;
+    font-weight: bold;
+    transition: transform 0.4s ease;
+}
+
+a:hover {
+    color: white;
+    transform: scale(1.1);
+}

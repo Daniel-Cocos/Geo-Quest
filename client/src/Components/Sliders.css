@@ -1,0 +1,46 @@
+.track {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: #e0e0e0;
+    transform: translateY(-50%);
+    border-radius: 3px;
+}
+
+.slider-container {
+    position: relative;
+    width: 300px;
+    height: 30px;
+    margin-bottom: 40px;
+}
+
+.range {
+    position: absolute;
+    top: 50%;
+    height: 6px;
+    background: #3273dc;
+    border-radius: 3px;
+    transform: translateY(-50%);
+}
+
+.thumb {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #3273dc;
+    border: 2px solid white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
