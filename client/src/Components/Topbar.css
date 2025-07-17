@@ -25,3 +25,20 @@ a:hover {
     color: white;
     transform: scale(1.1);
 }
+
+button {
+    margin-left: auto;
+    background-color: #3273dc;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #275bb5;
+}
+
