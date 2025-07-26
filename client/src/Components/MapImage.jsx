@@ -12,7 +12,11 @@ export default function StreetViewImage({ location }) {
         const fetchImage = async () => {
             try {
                 const result = await axios.get(
-                    `http://localhost:8000/api/location?lat=${encodeURIComponent(location.latitude)}&lon=${encodeURIComponent(location.longitude)}`
+                    `http://localhost:8000/api/location?lat=${encodeURIComponent(location.latitude)}&lon=${encodeURIComponent(location.longitude)}`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
                 );
                 setSrc(`data:image/jpeg;base64,${result.data.image}`);
                 setCoords({ lat: result.data.lat, lon: result.data.lon });

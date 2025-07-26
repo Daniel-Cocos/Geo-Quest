@@ -12,7 +12,9 @@ export default function App() {
   return (
     <>
       <Topbar onLoginClick={() => setShowModal(true)} />
+
       {showModal && <LoginModal onClose={() => setShowModal(false)} />}
+
       <div className="content">
         <Routes>
           <Route path="/" element={<Index />} />
