@@ -61,6 +61,6 @@ Geo-Quest
 │   └── vite.config.js
 ├── data
 │   └── users.json
-├── Makefile
+└── Makefile
 ```
 
