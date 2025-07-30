@@ -64,3 +64,9 @@ Geo-Quest
 └── Makefile
 ```
 
+## Tech Stack
+- **Frontend**: React, Vite
+- **Backend**: Python
+
+## Devpost Submission
+For more details visit the [Devpost project page](https://devpost.com/Daniel-Cocos?ref_content=user-portfolio&ref_feature=portfolio&ref_medium=global-nav)
