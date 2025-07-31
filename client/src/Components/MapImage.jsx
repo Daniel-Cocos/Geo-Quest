@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-export default function StreetViewImage({ location }) {
+export default function MapImage({ location, setCoords }) {
     const [src, setSrc] = useState(null);
-    const [coords, setCoords] = useState(null);
 
     useEffect(() => {
         if (!location) return;
@@ -16,8 +15,8 @@ export default function StreetViewImage({ location }) {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
                     }
-                }
-                );
+                });
+
                 setSrc(`data:image/jpeg;base64,${result.data.image}`);
                 setCoords({ lat: result.data.lat, lon: result.data.lon });
             } catch (err) {
@@ -26,16 +25,13 @@ export default function StreetViewImage({ location }) {
         };
 
         fetchImage();
-    }, [location]);
+    }, [location, setCoords]);
 
     if (!location) return null;
 
     return src ? (
         <div>
             <img src={src} alt="Street View" />
-            <p>
-                Actual location: Lat {coords.lat}, Lon {coords.lon}
-            </p>
         </div>
     ) : (
         <p>Loading Street View…</p>

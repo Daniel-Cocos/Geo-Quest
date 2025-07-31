@@ -93,6 +93,7 @@ def register():
         return jsonify({"data": "Username already exists"}), 200
 
     users[username] = generate_password_hash(password)
+    users["score"] = 0
 
     save_users(users)
 
