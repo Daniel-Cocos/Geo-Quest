@@ -4,7 +4,7 @@ A location-based guessing game built with React, Vite, and Google Maps API. Play
 ![Landing Page](assets/1.jpg)
 </br>
 ![Wrong Guess](assets/2.jpg)
-![Correct Guess](assets/3.png)
+![Correct Guess](assets/3.jpg)
 
 ## Features
 
