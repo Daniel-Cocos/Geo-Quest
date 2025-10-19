@@ -1,5 +1,8 @@
 # Geo-Quest
 A location-based guessing game built with React, Vite, and Google Maps API. Players select a travel range, get a random location on the map, and earn points by taking a photo as close as possible to the target location.
+![Landing Page](assets/1.jpg)
+![Wrong Guess](assets/2.jpg)
+![Correct Guess](assets/3.png)
 
 ## Features
 
